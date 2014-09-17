@@ -8,35 +8,35 @@ import (
 	"github.com/codegangsta/martini"
 )
 
-var portno = "66666\n"
-var portnoi = 0
+var port = 0
 
 func SetPort (enc Encoder, parms martini.Params) (int, string) {
-        port, err := strconv.Atoi(parms["id"])
-	if err != nil || port > 65535{
-		return http.StatusNotFound, Must(enc.Encode(
-                        NewError(ErrCodeNotExist, fmt.Sprintf("Illegal portnumber %s ", parms["id"]))))
+        newport, err := strconv.Atoi(parms["portno"])
+	
+	if port != 0 {
+		return http.StatusConflict, fmt.Sprintf("Already using portnumber %d\n", port)
+	} else if err != nil || port > 65535{
+		return http.StatusRequestEntityTooLarge, Must(enc.Encode(
+                        NewError(ErrCodeNotExist, fmt.Sprintf("Illegal portnumber %s\n", parms["portno"]))))
+	} else {
+		port = newport
+		return http.StatusCreated, fmt.Sprintf("Using portnumber  %d \n", port)
 	}
-	return http.StatusOK, "helt OK"
 }
 
 
+func SetResponse (enc Encoder, parms martini.Params) (int, string) {
+	respMsg := parms["restMsg"]
+	if len (respMsg) < 81 {
+
+		return http.StatusCreated, fmt.Sprintf("Using '%s' for responses\n", respMsg)
+	}
+
+	return 413, fmt.Sprintf("The string is too long, %d characters, max 80 allowed.\n", len(respMsg))
 
 
+}
 
 
-// func GetPort(r *http.Request, enc Encoder) string {
-// 	// Get the query string arguments, if any
-// 	qs := r.URL.Query()
-// 	wasport := qs.Get("port")
-// //	portnoi, err := strconv.Atoi(portno)
-// //	if err != nil {
-// //		portnoi = 0
-// //	}
-// 	if wasport == "" {
-// 		return portno
-// 	}
-// 	return wasport
-// }
 
 

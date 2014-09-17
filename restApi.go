@@ -10,9 +10,6 @@ import (
 //	"github.com/codegangsta/martini-contrib/auth"
 )
 
-// The one and only access token! In real-life scenarios, a more complex authentication
-// middleware than auth.Basic should be used, obviously.
-//const AuthToken = "token"
 
 // The one and only martini instance.
 var m *martini.Martini
@@ -26,7 +23,8 @@ func init() {
 	m.Use(MapEncoder)
 	// Setup routes
 	r := martini.NewRouter()
-	r.Get(`/port/:id`, SetPort)
+	r.Get(`/port/:portno`, SetPort)
+	r.Get(`/response/:restMsg`, SetResponse)
 	// Add the router action
 	m.Action(r.Handle)
 }
@@ -68,34 +66,9 @@ func MapEncoder(c martini.Context, w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	go func() {
-		// Listen on http: to raise an error and indicate that https: is required.
-		//
-		// This could also be achieved by passing the same `m` martini instance as
-		// used by the https server, and by using a middleware that checks for https
-		// and returns an error if it is not a secure connection. This would have the benefit
-		// of handling only the defined routes. However, it is common practice to define
-		// APIs on separate web servers from the web (html) pages, for maintenance and
-		// scalability purposes, so it's not like it will block otherwise valid routes.
-		//
-		// It is also common practice to use a different subdomain so that cookies are
-		// not transfered with every API request.
-		// So with that in mind, it seems reasonable to refuse each and every request
-		// on the non-https server, regardless of the route. This could of course be done
-		// on a reverse-proxy in front of this web server.
-		//
-		// if err := http.ListenAndServe(":8000", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// 	http.Error(w, "https scheme is required", http.StatusBadRequest)
-		// })); err != nil {
-		// 	log.Fatal(err)
-		// }
+
 	}()
 
-	// Listen on https: with the preconfigured martini instance. The certificate files
-	// can be created using this command in this repository's root directory:
-	//
-	// go run /path/to/goroot/src/pkg/crypto/tls/generate_cert.go --host="localhost"
-	//
-//	if err := http.ListenAndServeTLS(":8001", "cert.pem", "key.pem", m); err != nil {
 	if err := http.ListenAndServe   (":3001", m);  err != nil {
 		log.Fatal(err)
 	}
