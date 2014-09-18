@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/codegangsta/martini"
-//	"github.com/codegangsta/martini-contrib/auth"
 )
 
 
@@ -23,6 +22,9 @@ func init() {
 	m.Use(MapEncoder)
 	// Setup routes
 	r := martini.NewRouter()
+	r.Get(``, func() string {
+		return "Howdy\n"
+	})
 	r.Get(`/port/:portno`, SetPort)
 	r.Get(`/response/:restMsg`, SetResponse)
 	// Add the router action
@@ -69,7 +71,7 @@ func main() {
 
 	}()
 
-	if err := http.ListenAndServe   (":3001", m);  err != nil {
-		log.Fatal(err)
+	if err := http.ListenAndServe (":4001", m);  err != nil {
+		log.Fatal("fuck", err)
 	}
 }
