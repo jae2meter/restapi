@@ -1,11 +1,13 @@
 package main
 
 import (
+	"os"
+	"time"
+	"fmt"
 	"log"
 	"net/http"
 	"regexp"
 	"strings"
-
 	"github.com/codegangsta/martini"
 )
 
@@ -70,8 +72,12 @@ func main() {
 	go func() {
 
 	}()
+	portAPI := os.Getenv("PORT")
+	fmt.Println("Listening on PORT:", portAPI)
+	time.Sleep (10 * time.Second)
+	log.Fatal("fuck ", 1)
 
-	if err := http.ListenAndServe (":4001", m);  err != nil {
-		log.Fatal("fuck", err)
-	}
+//	if err := http.ListenAndServe (":" + portAPI, m);  err != nil {
+//		log.Fatal("fuck", err)
+//	}
 }

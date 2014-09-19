@@ -7,4 +7,4 @@ applications:
   host: restApi
   domain: 10.244.0.34.xip.io
   path: .
-  command: go build restApi.go api.go encoding.go errors.go
+
