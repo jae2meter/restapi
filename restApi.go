@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"time"
+//	"time"
 	"fmt"
 	"log"
 	"net/http"
@@ -25,10 +25,13 @@ func init() {
 	// Setup routes
 	r := martini.NewRouter()
 	r.Get(``, func() string {
-		return "Howdy\n"
+		return "Welcome to restApi framework\n"
 	})
 	r.Get(`/port/:portno`, SetPort)
-	r.Get(`/response/:restMsg`, SetResponse)
+
+	r.Post(`/response/:tecken`, postResponse)
+	r.Get(`/response`, getResponse)
+	
 	// Add the router action
 	m.Action(r.Handle)
 }
@@ -73,11 +76,14 @@ func main() {
 
 	}()
 	portAPI := os.Getenv("PORT")
+	// When running outside CF
+	if portAPI == "" {
+		portAPI = "40444" 
+	}
 	fmt.Println("Listening on PORT:", portAPI)
-	time.Sleep (10 * time.Second)
-	log.Fatal("fuck ", 1)
+	
+	if err := http.ListenAndServe (":"+portAPI, m);  err != nil {
+		log.Fatal("Not so good", err)
+	}
 
-//	if err := http.ListenAndServe (":" + portAPI, m);  err != nil {
-//		log.Fatal("fuck", err)
-//	}
 }
