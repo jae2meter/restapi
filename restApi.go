@@ -27,11 +27,20 @@ func init() {
 	r.Get(``, func() string {
 		return "Welcome to restApi framework\n"
 	})
-	r.Get(`/port/:portno`, SetPort)
-
-	r.Post(`/response/:tecken`, postResponse)
-	r.Get(`/response`, getResponse)
-	
+//------------------------------------------------------------------------
+//----------------------- PORT -------------------------------------------
+//------------------------------------------------------------------------
+	r.Post   (`/port/:portno` ,postPort)
+	r.Get    (`/port`         ,getPort)
+	r.Put    (`/port/:portno` ,putPort)
+	r.Delete (`/port`         ,delPort)
+//------------------------------------------------------------------------
+//----------------------- Response String---------------------------------
+//------------------------------------------------------------------------
+	r.Post   (`/response/:string`, postResponse)
+	r.Put    (`/response/:string`, putResponse)
+	r.Get    (`/response`,         getResponse)
+	r.Delete (`/response`,         delResponse)
 	// Add the router action
 	m.Action(r.Handle)
 }
