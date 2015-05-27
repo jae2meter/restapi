@@ -4,12 +4,40 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"os/exec"
 	"github.com/codegangsta/martini"
 )
 
 var port = 0
 var responseMsg = ""
 var ctr = 0
+//------------------------------------------------------------------------
+//----------------------- FIL -------------------------------------------
+//------------------------------------------------------------------------
+
+// func getFil (enc Encoder, parms martini.Params) (int, string) {
+// 	if fil == 0 {
+// 		return http.StatusPreconditionFailed, fmt.Sprintf("Must be created first\n")
+// 	}
+// 	return http.StatusOK, fmt.Sprintf("Using filnumber  %d \n", fil)
+// }
+
+
+
+func putFil (enc Encoder, parms martini.Params) (int, string) {
+
+	
+	cmd := exec.Command("touch", "sudda.txt");
+	out, err := cmd.Output()
+
+	if err != nil {
+		return http.StatusPreconditionFailed, fmt.Sprintf("Mysterious fault\n")
+	}  else {
+		return http.StatusOK, fmt.Sprintf("Using %s\n", out)
+	}
+}
+
+
 //------------------------------------------------------------------------
 //----------------------- PORT -------------------------------------------
 //------------------------------------------------------------------------
